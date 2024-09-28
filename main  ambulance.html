@@ -5,76 +5,75 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ambulance Tracker</title>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* Ensure HTML and body take up the full height */
-        html,
+        /* General Styles */
         body {
-            height: 100%;
+            font-family: 'Roboto', sans-serif;
             margin: 0;
-            font-family: Arial, sans-serif;
             display: flex;
             flex-direction: column;
+            height: 100vh;
         }
 
-        /* Wrapper for map and info sections */
+        /* Header Styles */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #007bff;
+            padding: 15px;
+            color: white;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        nav ul li {
+            margin: 0 15px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .auth-container button {
+            margin-left: 10px;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            background-color: #0056b3;
+            color: white;
+            cursor: pointer;
+        }
+
+        /* Main Container */
         .container {
             display: flex;
-            height: 100%;
+            flex: 1;
             overflow: hidden;
         }
 
-        /* Map takes up 70% of the screen */
         #map {
+            flex: 2;
             height: 100%;
-            width: 70%;
-            position: relative;
         }
 
-        /* Sidebar for patient/driver info, taking 30% width */
         .info {
-            width: 30%;
+            flex: 1;
             padding: 20px;
-            background-color: #f9f9f9;
-            display: flex;
-            flex-direction: column;
+            background-color: #ffffff;
             overflow-y: auto;
             box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
         }
 
-        /* Style for headings */
-        .info h2 {
-            margin-top: 0;
-            color: #007bff;
-        }
-
-        /* Style for form labels and input fields */
-        .info label {
-            font-weight: bold;
-            color: #333;
-        }
-
-        .info input {
-            width: calc(100% - 20px);
-            padding: 10px;
-            margin: 10px 0;
-            box-sizing: border-box;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-
-        .info textarea {
-            width: calc(100% - 20px);
-            padding: 10px;
-            margin: 10px 0;
-            box-sizing: border-box;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            resize: vertical;
-        }
-
-        /* Space for the control buttons */
         .controls {
             display: flex;
             justify-content: center;
@@ -83,101 +82,91 @@
             color: #fff;
         }
 
-        /* Style for control buttons */
-        .controls button,
-        .controls i {
-            color: white;
-            background-color: #0056b3;
-            border: none;
-            padding: 12px 25px;
+        .controls button {
             margin: 0 10px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #0056b3;
+            color: white;
             cursor: pointer;
-            border-radius: 5px;
-            font-size: 16px;
-            transition: background-color 0.3s;
         }
 
-        .controls button:hover,
-        .controls i:hover {
-            background-color: #003d7a;
+        /* Footer Styles */
+        footer {
+            background-color: #007bff;
+            color: white;
+            text-align: center;
+            padding: 20px;
         }
 
-        .price-section,
-        .hospital-section {
-            background-color: #e0e0e0;
-            padding: 15px;
-            border-radius: 5px;
-            margin-top: 20px;
+        footer p {
+            margin: 5px 0;
         }
 
-        /* Hide driver section initially */
-        .driver-info {
-            display: none;
-        }
-
-        /* List for hospitals */
-        .hospital-section ul {
-            list-style-type: none;
+        footer .social-icons {
+            list-style: none;
             padding: 0;
         }
 
-        .hospital-section li {
-            margin-bottom: 10px;
+        footer .social-icons li {
+            display: inline;
+            margin: 0 10px;
+        }
+
+        footer .social-icons a {
+            color: white;
+            text-decoration: none;
         }
     </style>
 </head>
 
 <body>
-    <div class="controls">
-        <button id="driver-mode">Driver</button>
-        <button id="patient-mode">Patient</button>
-        <i class="fas fa-home" id="home-btn"></i>
-    </div>
 
+    <!-- Header Section -->
+    <header>
+        <nav>
+            <ul>
+                <li><a href="#" id="driver-mode">Driver</a></li>
+                <li><a href="#" id="patient-mode">Patient</a></li>
+            </ul>
+        </nav>
+        <div class="auth-container">
+            <button class="sign-in">Sign In</button>
+            <button class="sign-up">Sign Up</button>
+        </div>
+    </header>
+
+    <!-- Main Container -->
     <div class="container">
         <div id="map"></div>
-
         <div class="info">
-            <!-- Patient section -->
+            <div class="controls">
+                <i class="fas fa-home" id="AMBULANCE TRACKER"></i>
+            </div>
+            <!-- Patient Section -->
             <div class="patient-info">
                 <h2>Patient Address</h2>
                 <label for="patient-address">Enter Patient Address:</label>
                 <input type="text" id="patient-address" placeholder="Enter address" />
-                
                 <h2>Destination Hospital</h2>
                 <label for="hospital-location">Enter Hospital Location:</label>
                 <input type="text" id="hospital-location" placeholder="Enter hospital location" />
-
-                <!-- Add a button to submit or update information -->
                 <button id="update-location">Update Location</button>
             </div>
-
-            <!-- Driver section -->
-            <div class="driver-info">
+            <!-- Driver Section -->
+            <div class="driver-info" style="display:none;">
                 <h2>Driver Details</h2>
                 <label for="driver-name">Driver Name:</label>
                 <input type="text" id="driver-name" placeholder="Enter driver name" />
-
                 <label for="ambulance-number">Ambulance Number:</label>
                 <input type="text" id="ambulance-number" placeholder="Enter ambulance number" />
-
                 <label for="driver-phone">Driver Phone Number:</label>
                 <input type="text" id="driver-phone" placeholder="Enter phone number" />
-
                 <h2>Ambulance Details</h2>
-                <label for="ambulance-details">Details:</label>
                 <textarea id="ambulance-details" rows="4" placeholder="Enter ambulance details"></textarea>
             </div>
-
-            <!-- Nearby hospitals section -->
-            <div class="hospital-section">
-                <h2>Hospitals Near You</h2>
-                <label for="nearby-hospital">Enter Nearby Hospital Details:</label>
-                <input type="text" id="nearby-hospital" placeholder="Enter nearby hospital details" />
-                <ul id="hospital-list"></ul>
-            </div>
-
-            <!-- Price section -->
+            <!-- Price Section -->
             <div class="price-section">
                 <h2>Estimated Price</h2>
                 <p id="price">Price depends on location and time</p>
@@ -185,78 +174,39 @@
         </div>
     </div>
 
+    <!-- Footer Section -->
+    <footer>
+        <p>&copy; 2024 Ambulance Tracker. All Rights Reserved.</p>
+        <ul class="social-icons">
+            <li><a href="#"><i class="fab fa-facebook"></i></a></li>
+            <li><a href="#"><i class="fab fa-twitter"></i></a></li>
+            <li><a href="#"><i class="fab fa-instagram"></i></a></li>
+            <li><a href="#"><i class="fab fa-linkedin"></i></a></li>
+        </ul>
+    </footer>
+
+    <!-- External Libraries -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script>
         // Initialize the map and set view to Sion, Mumbai
         var map = L.map('map').setView([19.0434, 72.8654], 13);
 
+        // Add OpenStreetMap tiles
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19,
             attribution: '© OpenStreetMap contributors'
         }).addTo(map);
 
-        // Custom ambulance icon
-        var ambulanceIcon = L.icon({
-            iconUrl: 'https://img.icons8.com/ios-filled/50/000000/ambulance.png',
-            iconSize: [30, 30],
-            iconAnchor: [15, 15]
+        // Event listeners for Sign In and Sign Up
+        document.querySelector('.sign-in').addEventListener('click', function () {
+            window.location.href = 'login.html'; // Redirect to login page
         });
 
-        var socket = io();
-
-        var ambulanceMarkers = {};
-
-        socket.on('location-update', function (data) {
-            var { id, lat, lng, details } = data;
-
-            if (ambulanceMarkers[id]) {
-                ambulanceMarkers[id].setLatLng([lat, lng]);
-            } else {
-                ambulanceMarkers[id] = L.marker([lat, lng], { icon: ambulanceIcon }).addTo(map);
-            }
-
-            // Update the driver info section with the latest ambulance details
-            if (document.querySelector('.driver-info').style.display === 'block') {
-                document.getElementById('ambulance-details').value = details || "No details available";
-            }
+        document.querySelector('.sign-up').addEventListener('click', function () {
+            window.location.href = 'login.html'; // Redirect to sign up page (same page for simplicity)
         });
-
-        // Toggle between driver and patient mode
-        document.getElementById('driver-mode').addEventListener('click', function () {
-            document.querySelector('.patient-info').style.display = 'none';
-            document.querySelector('.driver-info').style.display = 'block';
-        });
-
-        document.getElementById('patient-mode').addEventListener('click', function () {
-            document.querySelector('.driver-info').style.display = 'none';
-            document.querySelector('.patient-info').style.display = 'block';
-        });
-
-        // Home button functionality
-        document.getElementById('home-btn').addEventListener('click', function () {
-            alert("Home button clicked");
-        });
-
-        // Button to update location
-        document.getElementById('update-location').addEventListener('click', function () {
-            alert("Location updated!");
-            // Add actual functionality here
-        });
-
-        // Populate nearby hospitals (with placeholder data)
-        function getNearbyHospitals() {
-            var hospitalList = document.getElementById('hospital-list');
-            var hospitals = ['Hospital A', 'Hospital B', 'Hospital C', 'Hospital D'];
-
-            hospitals.forEach(function (hospital) {
-                var li = document.createElement('li');
-                li.textContent = hospital;
-                hospitalList.appendChild(li);
-            });
-        }
-
-        getNearbyHospitals();
     </script>
 </body>
 
